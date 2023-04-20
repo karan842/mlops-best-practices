@@ -3,4 +3,5 @@ numpy
 scikit-learn
 dvc
 xgboost
--e .
+dill
+# -e .
