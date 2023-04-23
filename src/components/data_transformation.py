@@ -6,13 +6,12 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, RobustScaler
-from imblearn.over_sampling import SMOTE
+from sklearn.preprocessing import OneHotEncoder, StandardScaler, RobustScaler, OrdinalEncoder, LabelEncoder
 
 from src.exception import CustomException
 from src.logger import logging
 
-from src.utils import save_object
+from src.utils import save_object, fix_outliers, class_imbalance, handling_class_imbalance
 
 @dataclass
 class DataTransformationConfig:
@@ -30,9 +29,9 @@ class DataTransformation:
         '''
         
         try:
-            self.numerical_columns = ['RowNumber', 'CustomerId', 'CreditScore', 'Age', 'Tenure', 'Balance',
+            numerical_columns = ['CreditScore', 'Age', 'Tenure', 'Balance',
                     'NumOfProducts', 'HasCrCard', 'IsActiveMember', 'EstimatedSalary']
-            self.categorical_columns = [ 'Geography', 'Gender']
+            categorical_columns = [ 'Geography', 'Gender']
             
             numerical_pipeline = Pipeline(
                 steps=[
@@ -44,7 +43,7 @@ class DataTransformation:
             categorical_pipeline = Pipeline(
                 steps=[
                     ('imputer',SimpleImputer(strategy='most_frequent')),
-                    ('one_hot_encoder',OneHotEncoder()),
+                    ('one_hot_encoder',OrdinalEncoder()),
                     ('scaler',StandardScaler(with_mean=False))
                 ]
             )
@@ -54,8 +53,8 @@ class DataTransformation:
             
             preprocessor = ColumnTransformer(
                 [
-                    ("num_pipeline",numerical_pipeline,self.numerical_columns),
-                    ("cat_pipeline",categorical_pipeline,self.categorical_columns)
+                    ("num_pipeline",numerical_pipeline,numerical_columns),
+                    ("cat_pipeline",categorical_pipeline,categorical_columns)
                 ]
             )
             
@@ -77,11 +76,13 @@ class DataTransformation:
             preprocessing_obj = self.get_data_transformer_object()
             
             target_column_name = "Exited"
-            numerical_columns = self.numerical_columns
+            numerical_columns = ['CreditScore', 'Age', 'Tenure', 'Balance',
+                    'NumOfProducts', 'HasCrCard', 'IsActiveMember', 'EstimatedSalary']
             
             input_feature_train_df = train_df.drop(columns=[target_column_name],axis=1)
+            input_feature_train_df.applymap(fix_outliers)
             target_feature_train_df = train_df[target_column_name]
-            
+                
             input_feature_test_df = test_df.drop(columns=[target_column_name],axis=1)
             target_feature_test_df = test_df[target_column_name]
             
@@ -89,19 +90,21 @@ class DataTransformation:
             
             input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
-
-            # Concatenate the features and target variables into arrays
-            target_feature_train_arr = np.array(train_df[target_column_name])
-            target_feature_test_arr = np.array(test_df[target_column_name])
+            
+            target_feature_train_arr = np.array(target_feature_train_df)
+            target_feature_test_arr = np.array(target_feature_test_df)
+            
+            input_feature_train_arr_balanced, target_feature_train_arr_balanced = handling_class_imbalance(input_feature_test_arr,target_feature_test_arr,60)
             
             train_arr = np.c_[
-                input_feature_train_arr, target_feature_train_arr
+                input_feature_train_arr_balanced, target_feature_train_arr_balanced
             ]
             
             test_arr = np.c_[
                 input_feature_test_arr, target_feature_test_arr
             ]
-            
+              
+                
             logging.info("Saving preprocessing object.")
             
             save_object(
@@ -114,7 +117,6 @@ class DataTransformation:
                 test_arr,
                 self.data_transformation_config.preprocessor_obj_file_path
             )
-            
-            
+                 
         except Exception as e:
             raise CustomException(e,sys)

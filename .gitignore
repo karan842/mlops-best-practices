@@ -9,3 +9,6 @@ env/
 
 # logs
 logs/
+
+## catboost
+catboost_info/
