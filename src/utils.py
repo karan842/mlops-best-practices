@@ -7,7 +7,7 @@ import dill
 from sklearn.metrics import f1_score, accuracy_score, roc_auc_score
 from imblearn.over_sampling import SMOTE
 from sklearn.feature_selection import mutual_info_classif
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_validate
 
 from collections import Counter
 
@@ -79,9 +79,10 @@ def handling_class_imbalance(X,y,thresh):
 ## K-Fold cross validation
 def cross_validate_model(model,X,y,n_folds):
     try:
-        scores = cross_val_score(model,X,y,cv=n_folds,scoring='roc_auc')
-        return scores.mean()
+        cv_results = cross_validate(model,X,y,cv=n_folds,scoring='accuracy',return_estimator=True)
+        best_estimator = cv_results['estimator'][cv_results['test_score'].argmax()]
         logging.info("Performed cross validation")
+        return best_estimator
     
     except Exception as e:
         raise CustomException(e,sys)
@@ -98,13 +99,9 @@ def evaluate_models(X_train,y_train,X_test,y_test,models):
             
             model.fit(X_train,y_train)
             
-            y_train_pred = model.predict(X_train)
-            
             y_test_pred = model.predict(X_test)
             
-            train_model_score = roc_auc_score(y_train, y_train_pred)
-            
-            test_model_score = roc_auc_score(y_test, y_test_pred)
+            test_model_score = accuracy_score(y_test, y_test_pred)
             
             report[list(models.keys())[i]] = test_model_score
             

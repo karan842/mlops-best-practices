@@ -2,8 +2,7 @@ import os
 import sys
 from dataclasses import dataclass
 from collections import Counter
-
-from imblearn.over_sampling import SMOTE
+from sklearn.model_selection import train_test_split
 
 from sklearn.ensemble import (
     AdaBoostClassifier,
@@ -38,6 +37,10 @@ class ModelTrainer:
             logging.info("Splitting training and test input data")
             X_train, y_train, X_test, y_test = (train_array[:,:-1], train_array[:,-1], test_array[:,:-1],test_array[:,-1])
             
+            ## validation data
+            X_train, X_valid, y_train, y_valid = train_test_split(X_train,y_train,test_size=0.2,random_state=42)
+            
+           
             models = {
                 "Random Forest": RandomForestClassifier(),
                 "Xgboost": XGBClassifier(),
@@ -46,16 +49,16 @@ class ModelTrainer:
                 "Logistic Regression": LogisticRegression(),
             }
             
-            cv_results = {}
+            model_report:dict = evaluate_models(X_train,y_train,X_valid,y_valid,models)
             
-            for name, model in models.items():
-                cv_score = cross_validate_model(model,X_train,y_train,5)
-                cv_results[name] = cv_score
-                
-            best_model_name = max(cv_results,key=cv_results.get)
+            best_model_score = max(sorted(model_report.values()))
+            
+            best_model_name = list(model_report.keys())[
+                list(model_report.values()).index(best_model_score)
+            ]
             best_model = models[best_model_name]
             
-            if cv_results[best_model_name] < 0.6:
+            if best_model_score < 0.6:
                 raise CustomException("No best model found!")
             logging.info("Best found model on both training and testing dataset.")
             
@@ -64,13 +67,13 @@ class ModelTrainer:
                 obj = best_model
             )
             
-            best_model.fit(X_train,y_train)
+            predicted_test = best_model.predict(X_test)
             
-            predicted = best_model.predict(X_test)
+            roc_auc_score_test = roc_auc_score(y_test, predicted_test)
             
-            roc_auc_score_ = roc_auc_score(y_test,predicted)
-            
-            return {best_model_name:roc_auc_score_}
+            return(
+                roc_auc_score_test
+            )
             
         except Exception as e:
             

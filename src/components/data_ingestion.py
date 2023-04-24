@@ -23,7 +23,7 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info("Entered the data ingestion method or component")
         try:
-            df = pd.read_csv('raw_data\data.csv')
+            df = pd.read_csv('synthetic_data\synthetic_data.csv')
             df.drop(['RowNumber','Surname','CustomerId'],axis=1,inplace=True)
             logging.info("Read the dataset as dataframe")
             

@@ -35,7 +35,7 @@ class DataTransformation:
             
             numerical_pipeline = Pipeline(
                 steps=[
-                    ("imputer",SimpleImputer(strategy="median")),
+                    ("imputer",SimpleImputer(strategy="mean")),
                     ('scaler',StandardScaler(with_mean=False))
                 ]
             )
@@ -43,7 +43,7 @@ class DataTransformation:
             categorical_pipeline = Pipeline(
                 steps=[
                     ('imputer',SimpleImputer(strategy='most_frequent')),
-                    ('one_hot_encoder',OrdinalEncoder()),
+                    ('one_hot_encoder', OneHotEncoder()),
                     ('scaler',StandardScaler(with_mean=False))
                 ]
             )
