@@ -7,7 +7,7 @@ import dill
 from sklearn.metrics import f1_score, accuracy_score, roc_auc_score
 from imblearn.over_sampling import SMOTE
 from sklearn.feature_selection import mutual_info_classif
-from sklearn.model_selection import cross_validate
+from sklearn.model_selection import cross_validate, GridSearchCV, RandomizedSearchCV
 
 from collections import Counter
 
@@ -88,7 +88,7 @@ def cross_validate_model(model,X,y,n_folds):
         raise CustomException(e,sys)
     
 # evaluate the model    
-def evaluate_models(X_train,y_train,X_test,y_test,models):
+def evaluate_models(X_train,y_train,X_test,y_test,models,params):
     try:
         
         report = {}
@@ -96,12 +96,19 @@ def evaluate_models(X_train,y_train,X_test,y_test,models):
         for i in range(len(list(models))):
             
             model = list(models.values())[i]
+            param = params[list(models.keys())[i]]
             
+            rs = GridSearchCV(model,param,cv=3)
+            rs.fit(X_train, y_train)
+            
+            model.set_params(**rs.best_params_)
             model.fit(X_train,y_train)
+            
+            # model.fit(X_train,y_train)
             
             y_test_pred = model.predict(X_test)
             
-            test_model_score = accuracy_score(y_test, y_test_pred)
+            test_model_score = roc_auc_score(y_test, y_test_pred)
             
             report[list(models.keys())[i]] = test_model_score
             
