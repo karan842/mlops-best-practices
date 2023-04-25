@@ -1,0 +1,7 @@
+{
+    "Best Model": "Random Forest",
+    "Accuracy": 0.9353333333333333,
+    "Precision": 0.922858495030762,
+    "Recall": 0.896551724137931,
+    "ROC-AUC": 0.9269686725264819
+}
