@@ -1,4 +1,4 @@
-<h1 align="center">MLOps - Bridging the Gap between Data Science and Operations</h1>
+<h1 align="center">MLOps🚀 - Bridging the Gap between Data Science and Operations⚙️</h1>
 
 <div align="center">
   <img src="https://assets-global.website-files.com/5e9aa66fd3886aa2b4ec01ca/630341e16bdfc87f7cd23ee0_ezgif.com-gif-maker%20(1).gif" alt="MLOps GIF" />
@@ -18,7 +18,8 @@ Implementing MLOps practices is crucial for several reasons:
 
 3. Agility: MLOps promotes agility by enabling rapid experimentation, iteration, and deployment of models. It facilitates quick feedback loops, allowing data scientists and engineers to adapt and improve models based on real-world performance and user feedback.
 
-4. Monitoring and Maintenance: MLOps ensures continuous monitoring of deployed models, tracking their performance and detecting anomalies. It enables proactive maintenance, including retraining models, updating dependencies, and addressing potential issues promptly.
+4. Monitoring and Maintenance: 
+MLOps ensures continuous monitoring of deployed models, tracking their performance and detecting anomalies. It enables proactive maintenance, including retraining models, updating dependencies, and addressing potential issues promptly.
 
 5. Collaboration: MLOps fosters collaboration among data scientists, engineers, and other stakeholders involved in the machine learning workflow. It establishes standardized practices, tools, and documentation, enabling efficient communication and knowledge sharing.
 This project aims to implement the MLOps (Machine Learning Operations) lifecycle from scratch. The stages involved in the lifecycle include:
