@@ -9,6 +9,8 @@ env/
 
 # logs
 logs/
+mlartifacts/
+mlruns/
 
 ## catboost
 catboost_info/

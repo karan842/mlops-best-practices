@@ -47,12 +47,19 @@ class DataIngestion:
             raise CustomException(e,sys)
         
 if __name__ == "__main__":
+    print('\n\n------Dev Stage Training------\n\n')
+    print("> Data Ingestion process begins....")
     obj = DataIngestion()
     train_data,test_data = obj.initiate_data_ingestion()
+    print('> Data Ingestion process completed.\n')
     
+    print('> Data Transformation operation begings....')
     data_transformation = DataTransformation()
     train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data,test_data)
+    print('> Data Trasformation operation completed.\n')
     # print(X.shape,y.shape)
     
+    print('> Training the machine learning algorithm (include experiment tracking)....')
     model_trainer = ModelTrainer()
     print(model_trainer.initiate_model_trainer(train_arr,test_arr))
+    print('> Model training and evaluation process done.\n')

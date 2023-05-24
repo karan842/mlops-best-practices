@@ -1,10 +1,10 @@
 import os
 import sys
-
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 import dill
-from sklearn.metrics import f1_score, accuracy_score, roc_auc_score
+from sklearn.metrics import f1_score, accuracy_score, roc_auc_score, precision_score, recall_score
 from imblearn.over_sampling import SMOTE
 from sklearn.feature_selection import mutual_info_classif
 from sklearn.model_selection import cross_validate, GridSearchCV, RandomizedSearchCV
@@ -13,6 +13,11 @@ from collections import Counter
 
 from src.exception import CustomException
 from src.logger import logging
+
+import yaml
+yaml_path = 'E:\mlops-best-practices\configure.yaml'
+with open(yaml_path, 'r') as yaml_file:
+    configure = yaml.safe_load(yaml_file)
 
 # save the artifacts
 def save_object(file_path,obj):
@@ -32,8 +37,10 @@ def save_object(file_path,obj):
 ## fixing outliers
 def fix_outliers(X):
     try:
-        Q1 = X.quantile(0.25)
-        Q3 = X.quantile(0.75)
+        quantile1 = configure["data_transformation"]["outliers"]["quantile1"]
+        quantile2 = configure["data_transformation"]["outliers"]["quantile2"]
+        Q1 = X.quantile(quantile1)
+        Q3 = X.quantile(quantile2)
         IQR = Q3 - Q1
         lower_bound = Q1 - 1.5 * IQR
         upper_bound = Q3 + 1.5 * IQR    
@@ -116,3 +123,48 @@ def evaluate_models(X_train,y_train,X_test,y_test,models,params):
     
     except Exception as e:
         raise CustomException(e,sys)
+
+def get_metrics(y_pred, y_true):
+    try:
+        accuracy = accuracy_score(y_true, y_pred)
+        precision = precision_score(y_true, y_pred)
+        recall = recall_score(y_true, y_pred)
+        f1 = f1_score(y_true, y_pred)
+        roc_score = roc_auc_score(y_true, y_pred)
+        
+        return {'Accuracy':accuracy, 'Precision':precision, 
+                'Recall':recall, 'F1_Score':f1,
+                'ROC_AUC_Score':roc_score}
+    
+    except Exception as e:
+        raise CustomException(e, sys)
+    
+# def confustion_matrix(y_test, y_test_pred,file_path):
+#     cm = confusion_matrix(y_test, y_test_pred)
+#     classes = np.unique(y_test)
+#     fig, ax = plt.subplots()
+#     im = ax.imshow(cm, cmap='Blues')
+#     ax.set_xticks(np.arange(len(classes)))
+#     ax.set_yticks(np.arange(len(classes)))
+#     ax.set_xticklabels(classes)
+#     ax.set_yticklabels(classes)
+#     ax.set_ylabel('True label')
+#     ax.set_xlabel('Predicted label')
+#     for i in range(len(classes)):
+#         for j in range(len(classes)):
+#             text = ax.text(j,i.cm[i,j],ha="center", va="center", color="white")
+#     cbar = ax.figure.colorbar(im, ax=ax)
+#     plt.savefig(file_path, dpi=300, bbox_inches='tight')
+    
+# def save_roc_auc_curve(y_test, y_score, file_path):
+#     fpr, tpr, thresholds = roc_curve(y_test, y_score)
+#     roc_auc = roc_auc_score(y_test, y_score)
+#     plt.plot(fpr, tpr, color='darkorange', label='ROC curve (area = %0.2f)' % roc_auc)
+#     plt.plot([0, 1], [0, 1], color='navy', linestyle='--')
+#     plt.xlim([0.0, 1.0])
+#     plt.ylim([0.0, 1.05])
+#     plt.xlabel('False Positive Rate')
+#     plt.ylabel('True Positive Rate')
+#     plt.title('Receiver operating characteristic')
+#     plt.legend(loc="lower right")
+#     plt.savefig(file_path, dpi=300, bbox_inches='tight')

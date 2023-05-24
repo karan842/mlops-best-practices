@@ -1,0 +1,42 @@
+base:
+  project: mlops-best-practices
+  author: Karan Shingde
+  email: karanshingde@gmail.com
+  version: 0.0.1
+
+data_source:
+  type: csv
+  raw_data_path: raw_data/data.csv
+  generated_data_path: synthetic_data/synthetic_data.csv
+  train_data_path: artifacts/train.csv
+  test_data_path: artifacts/test.csv
+
+data_transformation:
+  target_column: "Exited"
+
+  numerical:
+    columns: ['CreditScore', 'Age', 'Tenure', 'Balance', 'NumOfProducts', 'HasCrCard', 'IsActiveMember', 'EstimatedSalary']
+    # scaler: StandardScaler(with_mean=False)
+    # imputer: SimpleImputer(strategy='mean')
+    
+  categorical: 
+    columns: ['Geography', 'Gender']
+    # transformer: OneHotEncoder()
+    # imputer: SimpleImputer(strategy='most_frequent')
+    # encoder: OneHotEncoder()
+    # scaler: StandardScaler(with_mean=False)
+
+  imbalance_threshold: 60
+
+  outliers:
+    quantile1: 0.25
+    quantile2: 0.75
+
+  test_split: 0.2
+  random_state: 42
+
+artifacts:
+  model_path: artifacts/model.pkl
+  preprocessor_path: artifacts/preprocessor.pkl
+  params_path: artifacts/params.yaml
+

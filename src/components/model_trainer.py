@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+from datetime import datetime
 from dataclasses import dataclass
 from collections import Counter
 from sklearn.model_selection import train_test_split
@@ -16,15 +17,13 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
      f1_score, accuracy_score, roc_auc_score, precision_score, recall_score
 )
-import mlflow
-from mlflow.tracking import MlflowClient
 
+from src.tracking.mlflow import ExperimentTracking
 from src.exception import CustomException
 from src.logger import logging
 from src.utils import (
-    save_object, evaluate_models, cross_validate_model
+    save_object, evaluate_models, cross_validate_model, get_metrics
 )
-
 
 @dataclass
 class ModelTrainerConfig:
@@ -37,6 +36,7 @@ class ModelTrainer:
     def initiate_model_trainer(self,train_array,test_array):
         
         try:
+            
             logging.info("Splitting training and test input data")
             X_train, y_train, X_test, y_test = (train_array[:,:-1], train_array[:,-1], test_array[:,:-1],test_array[:,-1])
             
@@ -65,6 +65,7 @@ class ModelTrainer:
                 list(model_report.values()).index(best_model_score)
             ]
             best_model = models[best_model_name]
+            best_model_params = best_model.get_params()
             
             if best_model_score < 0.6:
                 raise CustomException("No best model found!")
@@ -74,46 +75,32 @@ class ModelTrainer:
                 file_path = self.model_trainer_config.trained_model_file_path,
                 obj = best_model
             )
-            
-            # log best model and its parameters with MLflow 
-            # with mlflow.start_run(run_name="Best Model"):
-            #     # log hyperparameters
-            #     for key, value in best_model.get_params().items():
-            #         mlflow.log_param(key,value)
-                    
-            #     # train and log model artifact
-            #     if isinstance(best_model,XGBClassifier):
-            #         best_model.fit(X_train, y_train, eval_set=[(X_valid, y_valid)])
-            #         mlflow.xgboost.log_model(best_model,"model")
-            #     elif isinstance(best_model, CatBoostClassifier):
-            #         best_model.fit(X_train, y_train, eval_set=[(X_valid, y_valid)],verbose=False)
-            #         mlflow.catboost.log_model(best_model,"model")
-            #     else:
-            #         best_model.fit(X_train, y_train)
-            #         mlflow.sklearn.log_model(best_model,"model")
-            
+        
             # Log metrics
             predicted_test = best_model.predict(X_test)
-            accuracy_score_test = accuracy_score(y_test, predicted_test)
-            precision_score_test = precision_score(y_test, predicted_test)
-            recall_score_test = recall_score(y_test, predicted_test)
-            f1_score_test = f1_score(y_test, predicted_test)
-            roc_auc_score_test = roc_auc_score(y_test, predicted_test)
+            evaluation_metrices = get_metrics(y_test, predicted_test)
+            best_model_artifacts = {'Best Model':best_model_name}
+            best_model_artifacts.update(evaluation_metrices)
             
-            metrics = {'Best Model':best_model_name,
-                       'Accuracy':accuracy_score_test,
-                       'Precision':precision_score_test,
-                       'Recall':recall_score_test,
-                       'ROC-AUC':roc_auc_score_test}
+            # mlflow tracking
             
-            # for key, value in metrics.items()
+            experiment_name = 'customer-churn-prediction-experiment'+str(datetime.now().strftime("%d-%m-%Y"))
+
+            run_name = 'customer-churn-prediction'+str(datetime.now().strftime("%d-%m-%Y"))
+            
+            exp_track = ExperimentTracking(
+                experiment_name = experiment_name, 
+                run_name = run_name
+            )
+            
+            exp_track.create_experiment(best_model, evaluation_metrices, best_model_params)
             
             with open('artifacts/metrics.json','w') as metrics_file:
-                json.dump(metrics,metrics_file,indent=4)
-            logging.info("Metrics saved")
+                json.dump(best_model_artifacts,metrics_file,indent=4)
+            logging.info("Best Model Metrics saved")
             
             return(
-                metrics
+                best_model_artifacts
             )
             
         except Exception as e:

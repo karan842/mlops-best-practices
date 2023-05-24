@@ -13,6 +13,12 @@ from src.logger import logging
 
 from src.utils import save_object, fix_outliers, class_imbalance, handling_class_imbalance
 
+import yaml
+yaml_path = 'E:\mlops-best-practices\configure.yaml'
+with open(yaml_path, 'r') as yaml_file:
+    configure = yaml.safe_load(yaml_file)
+
+
 @dataclass
 class DataTransformationConfig:
     preprocessor_obj_file_path = os.path.join('artifacts','preprocessor.pkl')
@@ -29,9 +35,8 @@ class DataTransformation:
         '''
         
         try:
-            numerical_columns = ['CreditScore', 'Age', 'Tenure', 'Balance',
-                    'NumOfProducts', 'HasCrCard', 'IsActiveMember', 'EstimatedSalary']
-            categorical_columns = [ 'Geography', 'Gender']
+            numerical_columns = configure["data_transformation"]["numerical"]["columns"]
+            categorical_columns = configure["data_transformation"]["categorical"]["columns"]
             
             numerical_pipeline = Pipeline(
                 steps=[
@@ -75,9 +80,8 @@ class DataTransformation:
             
             preprocessing_obj = self.get_data_transformer_object()
             
-            target_column_name = "Exited"
-            numerical_columns = ['CreditScore', 'Age', 'Tenure', 'Balance',
-                    'NumOfProducts', 'HasCrCard', 'IsActiveMember', 'EstimatedSalary']
+            target_column_name = configure["data_transformation"]["target_column"]
+            numerical_columns = configure["data_transformation"]["numerical"]["columns"]
             
             input_feature_train_df = train_df.drop(columns=[target_column_name],axis=1)
             input_feature_train_df.applymap(fix_outliers)
@@ -94,7 +98,9 @@ class DataTransformation:
             target_feature_train_arr = np.array(target_feature_train_df)
             target_feature_test_arr = np.array(target_feature_test_df)
             
-            input_feature_train_arr_balanced, target_feature_train_arr_balanced = handling_class_imbalance(input_feature_test_arr,target_feature_test_arr,60)
+            imbalance_thresh = configure["data_transformation"]["imbalance_threshold"]
+            
+            input_feature_train_arr_balanced, target_feature_train_arr_balanced = handling_class_imbalance(input_feature_test_arr,target_feature_test_arr,imbalance_thresh)
             
             train_arr = np.c_[
                 input_feature_train_arr_balanced, target_feature_train_arr_balanced
