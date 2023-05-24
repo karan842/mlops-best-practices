@@ -139,6 +139,15 @@ def get_metrics(y_pred, y_true):
     except Exception as e:
         raise CustomException(e, sys)
     
+
+def load_obejct(file_path):
+    try:
+        with open(file_path, "rb") as file_obj:
+            return dill.load(file_obj)
+        
+    except Exception as e:
+        raise CustomException(e,sys)
+    
 # def confustion_matrix(y_test, y_test_pred,file_path):
 #     cm = confusion_matrix(y_test, y_test_pred)
 #     classes = np.unique(y_test)

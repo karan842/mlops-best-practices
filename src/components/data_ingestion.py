@@ -7,6 +7,7 @@ from dataclasses import dataclass
 
 from src.exception import CustomException
 from src.logger import logging
+from src.tracking.params import save_params_to_yaml
 from src.components.data_transformation import DataTransformation, DataTransformationConfig
 from src.components.model_trainer import ModelTrainer
 
@@ -59,7 +60,8 @@ if __name__ == "__main__":
     print('> Data Trasformation operation completed.\n')
     # print(X.shape,y.shape)
     
-    print('> Training the machine learning algorithm (include experiment tracking)....')
+    print('> Training the machine learning algorithm (include experiment tracking and tuning)....\n')
+    save_params_to_yaml()
     model_trainer = ModelTrainer()
     print(model_trainer.initiate_model_trainer(train_arr,test_arr))
-    print('> Model training and evaluation process done.\n')
+    print('\n> Model training and evaluation process done.\n')

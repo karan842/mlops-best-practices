@@ -18,7 +18,7 @@ from sklearn.metrics import (
      f1_score, accuracy_score, roc_auc_score, precision_score, recall_score
 )
 
-from src.tracking.mlflow import ExperimentTracking
+from src.tracking.mlflow_tracking import ExperimentTracking
 from src.exception import CustomException
 from src.logger import logging
 from src.utils import (
@@ -89,11 +89,15 @@ class ModelTrainer:
             run_name = 'customer-churn-prediction'+str(datetime.now().strftime("%d-%m-%Y"))
             
             exp_track = ExperimentTracking(
+                model = best_model,
                 experiment_name = experiment_name, 
-                run_name = run_name
+                run_name = run_name,
+                run_metrics = evaluation_metrices,
+                run_params = best_model_params
             )
             
-            exp_track.create_experiment(best_model, evaluation_metrices, best_model_params)
+            exp_track.create_experiment()
+            exp_track.to_production(version=1,stage=True)
             
             with open('artifacts/metrics.json','w') as metrics_file:
                 json.dump(best_model_artifacts,metrics_file,indent=4)
