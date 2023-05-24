@@ -1,0 +1,16 @@
+stages:
+  ml_pipeline:
+    cmd: python src/components/data_ingestion.py
+    deps:
+    - src/components/data_transformation.py
+    - src/tracking/params.py
+    - src/components/model_trainer.py
+    outs:
+    - artifacts/train.csv
+    - artifacts/test.csv
+    - artifacts/raw.csv
+    - artifacts/preprocessor.pkl
+    - artifacts/model.pkl
+    - artifacts/params.json
+    - artifacts/metrics.json
+    
