@@ -7,4 +7,5 @@ dill
 catboost
 lightgbm
 mlflow
+fastapi
 # -e .
