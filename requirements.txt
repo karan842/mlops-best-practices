@@ -6,6 +6,6 @@ xgboost
 dill
 catboost
 lightgbm
-mlflow
+mlflow==2.3.*
 fastapi
 # -e .
