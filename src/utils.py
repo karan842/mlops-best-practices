@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.append('G:\\mlops-best-practices')
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -15,9 +16,10 @@ from src.exception import CustomException
 from src.logger import logging
 
 import yaml
-yaml_path = 'E:\mlops-best-practices\configure.yaml'
+yaml_path = 'G:\\mlops-best-practices\configure.yaml'
 with open(yaml_path, 'r') as yaml_file:
     configure = yaml.safe_load(yaml_file)
+
 
 # save the artifacts
 def save_object(file_path,obj):
@@ -140,7 +142,7 @@ def get_metrics(y_pred, y_true):
         raise CustomException(e, sys)
     
 
-def load_obejct(file_path):
+def load_object(file_path):
     try:
         with open(file_path, "rb") as file_obj:
             return dill.load(file_obj)

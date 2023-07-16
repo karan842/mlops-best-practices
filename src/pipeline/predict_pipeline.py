@@ -1,6 +1,8 @@
 import sys
+sys.path.append('G:\\mlops-best-practices')
 import pandas as pd
 from src.exception import CustomException
+from src.logger import logging
 from src.utils import load_object
 
 
@@ -8,7 +10,7 @@ class PredictPipeline:
     def __init__(self):
         pass
     
-    def predict(self. features):
+    def predict(self, features):
         try:
             model_path = 'artifacts/model.pkl'
             preprocessor_path = 'artifacts/preprocessor.pkl'
@@ -30,7 +32,7 @@ class CustomData:
                  Balance: float,
                  NumOfProducts: int,
                  HasCrCard: int,
-                 IsActiveNumber: int,
+                 IsActiveMember: int,
                  EstimatedSalary: float):
         self.CreditScore = CreditScore
         self.Geography = Geography
@@ -40,7 +42,7 @@ class CustomData:
         self.Balance = Balance
         self.NumOfProducts = NumOfProducts
         self.HasCrCard = HasCrCard
-        self.IsActiveNumber = IsActiveNumber
+        self.IsActiveMember = IsActiveMember
         self.EstimatedSalary = EstimatedSalary
         
     def get_data_as_data_frame(self):
@@ -48,12 +50,13 @@ class CustomData:
             custom_data_input_dict = {
                 "CreditScore": [self.CreditScore],
                 "Geography": [self.Geography],
+                "Gender": [self.Gender],
                 "Age": [self.Age],
                 "Tenure": [self.Tenure],
                 "Balance": [self.Balance],
                 "NumOfProducts": [self.NumOfProducts],
                 "HasCrCard": [self.HasCrCard],
-                "IsActiveMember": [self.IsActiveNumber],
+                "IsActiveMember": [self.IsActiveMember],
                 "EstimatedSalary": [self.EstimatedSalary],
             }
             

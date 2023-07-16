@@ -3,6 +3,7 @@ from faker import Faker
 import random
 import os
 import sys
+sys.path.append('G:\\mlops-best-practices')
 from dataclasses import dataclass
 
 from src.exception import CustomException

@@ -13,10 +13,6 @@ from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier
 from sklearn.linear_model import LogisticRegression
 
-from sklearn.metrics import (
-     f1_score, accuracy_score, roc_auc_score, precision_score, recall_score
-)
-
 from src.exception import CustomException
 from src.logger import logging
 
@@ -48,29 +44,33 @@ class ExperimentTracking:
             mlflow.set_tag("tag1", "Customer Churn")
              
             if isinstance(self.model, XGBClassifier):
-                mlflow.xgboost.log_model(self.model, "best_model", registered_model_name="XGBoost Model")
+                mlflow.xgboost.log_model(self.model, "best_model", registered_model_name="XGBoost")
             elif isinstance(self.model, LGBMClassifier):
-                mlflow.lightgbm.log_model(self.model, "best_model",registered_model_name="LGBM Model")
+                mlflow.lightgbm.log_model(self.model, "best_model",registered_model_name="LGBM")
             else:
-                mlflow.sklearn.log_model(self.model, "best_model",registered_model_name="Sklearn Model")
+                mlflow.sklearn.log_model(self.model, "best_model",registered_model_name="Sklearn")
                 
         print(f'RUN - {self.run_name} is logged to Experiment - {self.experiment_name}')
     
-    def to_production(self,version,stage:bool):
+    def to_production(self, version:int, stage: str):
         if stage:
+            if isinstance(self.model, XGBClassifier):
+                model_name = "XGBoost"
+            elif isinstance(self.model, LGBMClassifier):
+                model_name = "LGBM"
+            else:
+                model_name = "Sklearn"
+            
             client = mlflow.tracking.MlflowClient()
-            model_name = self.get_registered_model_name(client)
+            model_version = client.get_latest_versions(name=model_name, stages=[stage])[0].version
             client.transition_model_version_stage(
                 name=model_name,
-                version=version,
-                stage="Production",
-            )  
+                version=model_version,
+                stage=stage,
+            )
+            print(f"Model {model_name} version {model_version} is moved to stage '{stage}'.")
             
-    def get_registered_model_name(self, client):
-        registered_models = client.list_registered_models()
-        for model in registered_models:
-            if model.latest_versions[0].model_version == self.model.version:
-                return model.name
-        raise ValueError("Registered model not found!")        
-                        
-                        
+    # def get_registered_model_name(self, client):
+    #     model_type = self.model.__class__.__name__
+    #     registered_model_name = f"{model_type} Model"
+    #     return registered_model_name

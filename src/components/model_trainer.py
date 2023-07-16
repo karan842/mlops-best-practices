@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.append('G:\\mlops-best-practices')
 import json
 from datetime import datetime
 from dataclasses import dataclass
@@ -45,11 +46,11 @@ class ModelTrainer:
             
            
             models = {
-                "Random Forest": RandomForestClassifier(),
+                # "Random Forest": RandomForestClassifier(),
                 "XGBoost": XGBClassifier(),
-                "LGBM": LGBMClassifier(),
-                "AdaBoost": AdaBoostClassifier(),
-                "Logistic Regression": LogisticRegression(),
+                # "LGBM": LGBMClassifier(),
+                # "AdaBoost": AdaBoostClassifier(),
+                # "Logistic Regression": LogisticRegression(),
             }
             
             # loading parameters for tuning 
@@ -97,7 +98,7 @@ class ModelTrainer:
             )
             
             exp_track.create_experiment()
-            exp_track.to_production(version=1,stage=True)
+            # exp_track.to_production(version=1,stage="Production")
             
             with open('artifacts/metrics.json','w') as metrics_file:
                 json.dump(best_model_artifacts,metrics_file,indent=4)

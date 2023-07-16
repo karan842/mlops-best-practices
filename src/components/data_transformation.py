@@ -1,4 +1,5 @@
 import sys
+sys.path.append('G:\\mlops-best-practices')
 import os
 from dataclasses import dataclass
 import numpy as np
@@ -14,7 +15,7 @@ from src.logger import logging
 from src.utils import save_object, fix_outliers, class_imbalance, handling_class_imbalance
 
 import yaml
-yaml_path = 'E:\mlops-best-practices\configure.yaml'
+yaml_path = 'G:\\mlops-best-practices\configure.yaml'
 with open(yaml_path, 'r') as yaml_file:
     configure = yaml.safe_load(yaml_file)
 
