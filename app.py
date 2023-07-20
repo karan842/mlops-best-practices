@@ -54,4 +54,4 @@ async def predict_custom_data(custom_data: CustomDataModel):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='localhost', port=4040)
+    uvicorn.run(app, host='0.0.0.0', port=4040)

@@ -13,4 +13,3 @@ fastapi
 uvicorn
 python-dotenv
 faker
-# -e .
