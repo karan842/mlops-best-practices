@@ -5,6 +5,8 @@ from pydantic import BaseModel
 import sys
 import os
 from src.pipeline.predict_pipeline import PredictPipeline, CustomData
+from src.exception import CustomException
+from src.logger import logging
 
 # Pydantic Model
 class CustomDataModel(BaseModel):
@@ -25,13 +27,14 @@ predictor = PredictPipeline()
 
 @app.get("/")
 def home():
+    logging.info("Recieved a request at / endpoint.")
     return {"message": "MLOps best practices\n\n Source code: https://www.github.com/karan842/mlops-best-practices"}
 
 @app.post("/predict")
 async def predict_custom_data(custom_data: CustomDataModel):
     try:
         # convert the received Pydantic model to dict
-        custom_data_dict = custom_data.dict()
+        custom_data_dict = custom_data.model_dump()
         
         # Create a CustomData instance using the data from Pydantic model
         custom_data_instance = CustomData(**custom_data_dict)
@@ -42,11 +45,13 @@ async def predict_custom_data(custom_data: CustomDataModel):
         # Make predictions using the PredictPipeline
         preds = predictor.predict(custom_data_df)
         
+        logging.info("Prediction successful.")
         return {"prediction": preds.tolist()}
         
     except Exception as e:
+        logging.error("Something went wrong on /predict endpoint.")
         return {"Error:": str(e)}  
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='localhost', port=4000)
+    uvicorn.run(app, host='localhost', port=4040)

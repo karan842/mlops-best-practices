@@ -1,6 +1,9 @@
 import sys
-sys.path.append('G:\\mlops-best-practices')
 import os
+from dotenv import load_dotenv
+load_dotenv()
+project_home_path = os.environ.get('PROJECT_HOME_PATH')
+sys.path.append(project_home_path)
 from dataclasses import dataclass
 import numpy as np
 import pandas as pd
@@ -14,10 +17,7 @@ from src.logger import logging
 
 from src.utils import save_object, fix_outliers, class_imbalance, handling_class_imbalance
 
-import yaml
-yaml_path = 'G:\\mlops-best-practices\configure.yaml'
-with open(yaml_path, 'r') as yaml_file:
-    configure = yaml.safe_load(yaml_file)
+from configure import configure
 
 
 @dataclass

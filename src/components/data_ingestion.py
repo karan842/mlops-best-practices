@@ -1,6 +1,9 @@
 import sys
-sys.path.append('G:\\mlops-best-practices')
 import os
+from dotenv import load_dotenv
+load_dotenv()
+project_home_path = os.environ.get('PROJECT_HOME_PATH')
+sys.path.append(project_home_path)
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split

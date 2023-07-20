@@ -1,5 +1,9 @@
 import sys
-sys.path.append('G:\\mlops-best-practices')
+import os
+from dotenv import load_dotenv
+load_dotenv()
+project_home_path = os.environ.get('PROJECT_HOME_PATH')
+sys.path.append(project_home_path)
 from src.logger import logging
 
 def error_message_detail(error,error_detail:sys):
@@ -19,3 +23,6 @@ class CustomException(Exception):
     
     def __str__(self):
         return self.error_message
+    
+if __name__ == '__main__':
+    print("working")

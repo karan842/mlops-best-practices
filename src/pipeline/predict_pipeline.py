@@ -1,5 +1,9 @@
 import sys
-sys.path.append('G:\\mlops-best-practices')
+import os
+from dotenv import load_dotenv
+load_dotenv()
+project_home_path = os.environ.get('PROJECT_HOME_PATH')
+sys.path.append(project_home_path)
 import pandas as pd
 from src.exception import CustomException
 from src.logger import logging
@@ -64,4 +68,6 @@ class CustomData:
         
         except Exception as e:
             raise CustomException(e,sys)
-        
+
+if __name__ == '__main__':
+    print('Script working!')

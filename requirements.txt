@@ -1,4 +1,6 @@
+wheel
 pandas
+imblearn
 numpy
 scikit-learn
 dvc
@@ -8,4 +10,7 @@ catboost
 lightgbm
 mlflow==2.3.*
 fastapi
+uvicorn
+python-dotenv
+faker
 # -e .

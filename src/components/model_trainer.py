@@ -1,6 +1,9 @@
 import os
 import sys
-sys.path.append('G:\\mlops-best-practices')
+from dotenv import load_dotenv
+load_dotenv()
+project_home_path = os.environ.get('PROJECT_HOME_PATH')
+sys.path.append(project_home_path)
 import json
 from datetime import datetime
 from dataclasses import dataclass

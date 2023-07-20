@@ -3,7 +3,10 @@ from faker import Faker
 import random
 import os
 import sys
-sys.path.append('G:\\mlops-best-practices')
+from dotenv import load_dotenv
+load_dotenv()
+project_home_path = os.environ.get('PROJECT_HOME_PATH')
+sys.path.append(project_home_path)
 from dataclasses import dataclass
 
 from src.exception import CustomException
@@ -61,6 +64,7 @@ class SyntheticDataGenerator:
     
     
 if __name__ == "__main__":       
-    gen_df = SyntheticDataGenerator('raw_data\data.csv',10000)
-    synthetic_data = gen_df.generate_synthetic_data()
-    logging.info("Synthetic data generated")
+    # gen_df = SyntheticDataGenerator('raw_data\data.csv',10000)
+    # synthetic_data = gen_df.generate_synthetic_data()
+    # logging.info("Synthetic data generated")
+    print('Working')
