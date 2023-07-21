@@ -9,8 +9,5 @@ stages:
     - artifacts/train.csv
     - artifacts/test.csv
     - artifacts/raw.csv
-    - artifacts/preprocessor.pkl
-    - artifacts/model.pkl
-    - artifacts/params.json
-    - artifacts/metrics.json
+    
     
