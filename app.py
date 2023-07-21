@@ -34,7 +34,7 @@ def home():
 async def predict_custom_data(custom_data: CustomDataModel):
     try:
         # convert the received Pydantic model to dict
-        custom_data_dict = custom_data.model_dump()
+        custom_data_dict = custom_data.dict()
         
         # Create a CustomData instance using the data from Pydantic model
         custom_data_instance = CustomData(**custom_data_dict)
