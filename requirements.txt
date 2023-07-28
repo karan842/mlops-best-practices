@@ -13,3 +13,4 @@ fastapi
 uvicorn
 python-dotenv
 faker
+pytest
