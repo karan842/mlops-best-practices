@@ -45,8 +45,15 @@ async def predict_custom_data(custom_data: CustomDataModel):
         # Make predictions using the PredictPipeline
         preds = predictor.predict(custom_data_df)
         
+        # Coverting to the desired output format
+        prediction_result = int(preds.item())
+        
+        if prediction_result == 1:
+            return {'Churn Prediction': "Yes"}
+        else:
+            return {"Churn Prediction": "No"}
         logging.info("Prediction successful.")
-        return {"prediction": preds.tolist()}
+        # return {"prediction": prediction_result}
         
     except Exception as e:
         logging.error("Something went wrong on /predict endpoint.")

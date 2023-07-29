@@ -8,6 +8,8 @@ mlruns/
 notebooks/
 raw_data/
 synthetic_data/
+test/
 __pycache__/
 *.pyc
+*.csv
 *.ipynb_checkpoints

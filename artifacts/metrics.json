@@ -1,8 +1,8 @@
 {
-    "Best Model": "Random Forest",
-    "Accuracy": 0.9256666666666666,
-    "Precision": 0.872183908045977,
-    "Recall": 0.9186440677966101,
-    "F1_Score": 0.8948113207547169,
-    "ROC_AUC_Score": 0.9239980186505287
+    "Best Model": "XGBoost",
+    "Accuracy": 0.7075,
+    "Precision": 0.5259770114942529,
+    "Recall": 0.6124197002141327,
+    "F1_Score": 0.5659163987138263,
+    "ROC_AUC_Score": 0.6814518636598252
 }
