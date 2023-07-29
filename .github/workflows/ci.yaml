@@ -30,4 +30,6 @@ jobs:
 #       - name: Test with pytest
 #         run: |
 #           pytest
-# ```
+      - name: Build docker image
+        run: |
+          docker build -t churn-prediction:v0.1 .
