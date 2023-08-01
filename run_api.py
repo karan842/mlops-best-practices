@@ -12,7 +12,7 @@ from src.logger import logging
 # Sample test cases
 BASE_URL = "http://localhost:4040"
 
-def test_predict_endpoint(test_data):
+def predict_endpoint(test_data):
     try:
         response = requests.post(f"{BASE_URL}/predict",
                                  json=test_data)
@@ -61,6 +61,6 @@ if __name__ == '__main__':
         "EstimatedSalary": args.EstimatedSalary
     }
     
-    test_predict_endpoint(test_data)
+    predict_endpoint(test_data)
 
     

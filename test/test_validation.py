@@ -32,7 +32,7 @@ def test_predict_custom_data_valid():
     }
     response = client.post("/predict", json=data)
     assert response.status_code == 200
-    assert response.json() == {""}
+    assert response.json() == {"Churn Prediction": "No"}
 
 def test_predict_custom_data_invalid_input():
     data = {
