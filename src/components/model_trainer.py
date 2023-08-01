@@ -49,8 +49,8 @@ class ModelTrainer:
             
            
             models = {
-                # "Random Forest": RandomForestClassifier(),
-                "XGBoost": XGBClassifier(),
+                "Random Forest": RandomForestClassifier(),
+                # "XGBoost": XGBClassifier(),
                 # "LGBM": LGBMClassifier(),
                 # "AdaBoost": AdaBoostClassifier(),
                 # "Logistic Regression": LogisticRegression(),

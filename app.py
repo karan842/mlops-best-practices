@@ -7,19 +7,8 @@ import os
 from src.pipeline.predict_pipeline import PredictPipeline, CustomData
 from src.exception import CustomException
 from src.logger import logging
+from src.pipeline.validation_pipeline import CustomDataModel
 
-# Pydantic Model
-class CustomDataModel(BaseModel):
-    CreditScore: int
-    Geography: str
-    Gender: str
-    Age: int
-    Tenure: int
-    Balance: float
-    NumOfProducts: int
-    HasCrCard: int
-    IsActiveMember: int
-    EstimatedSalary: float
 
 # Iniiate FastAPI
 app = FastAPI()
@@ -29,6 +18,11 @@ predictor = PredictPipeline()
 def home():
     logging.info("Recieved a request at / endpoint.")
     return {"message": "MLOps best practices\n\n Source code: https://www.github.com/karan842/mlops-best-practices"}
+
+@app.post("/")
+def home():
+    logging.error("Wrong method selected.")
+    return {"message":"Wrong method selected1 please use GET method."}
 
 @app.post("/predict")
 async def predict_custom_data(custom_data: CustomDataModel):
@@ -59,6 +53,10 @@ async def predict_custom_data(custom_data: CustomDataModel):
         logging.error("Something went wrong on /predict endpoint.")
         return {"Error:": str(e)}  
 
+@app.get("/predict")
+def predict_custom_data():
+    logging.error("Wrong method selected.")
+    return {"message":"Wrong method selected! please use POST method."}
 
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=4040)

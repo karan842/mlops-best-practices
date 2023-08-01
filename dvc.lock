@@ -1,0 +1,30 @@
+schema: '2.0'
+stages:
+  ml_pipeline:
+    cmd: python src/components/data_ingestion.py
+    deps:
+    - path: src/components/data_transformation.py
+      hash: md5
+      md5: 9921bc6ed5b9668d287ef7aed6892d32
+      size: 5008
+    - path: src/components/model_trainer.py
+      hash: md5
+      md5: 7a7e4f2e94c8c6724c8e1b2e1da4f91e
+      size: 4337
+    - path: src/tracking/params.py
+      hash: md5
+      md5: 971175c1113db19a87385941420f3aea
+      size: 1717
+    outs:
+    - path: artifacts/raw.csv
+      hash: md5
+      md5: ee8eb25111a586a44baba65b31d1ade8
+      size: 978246
+    - path: artifacts/test.csv
+      hash: md5
+      md5: 8ad04bc49656380163d5ec763d3b193f
+      size: 293676
+    - path: artifacts/train.csv
+      hash: md5
+      md5: dc2bae8c99454ac6539e96b7431f3563
+      size: 684681
