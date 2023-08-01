@@ -1,13 +1,13 @@
 import json 
 import os 
 import sys
-import pytest 
-from fastapi.testclient import TestClient
 from dotenv import load_dotenv
 load_dotenv()
 project_home_path = os.environ.get('PROJECT_HOME_PATH')
-sys.path.append(project_home_path)
+sys.path.insert(0, project_home_path)
 from src.utils import *
+import pytest 
+from fastapi.testclient import TestClient
 from app import app
 
 client = TestClient(app)
