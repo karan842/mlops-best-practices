@@ -1,0 +1,13 @@
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: prediction-service
+spec:
+  selector:
+    app: churn-prediction
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
