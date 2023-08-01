@@ -1,10 +1,9 @@
 import json 
 import os 
 import sys
-from dotenv import load_dotenv
-load_dotenv()
-project_home_path = os.environ.get('PROJECT_HOME_PATH')
-sys.path.insert(0, project_home_path)
+file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+# print(file_path)
+sys.path.append(file_path)
 from src.utils import *
 import pytest 
 from fastapi.testclient import TestClient
