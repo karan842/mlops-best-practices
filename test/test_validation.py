@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 project_home_path = os.environ.get('PROJECT_HOME_PATH')
 sys.path.append(project_home_path)
-# from src.utils import *
+from src.utils import *
 from app import app
 
 client = TestClient(app)
