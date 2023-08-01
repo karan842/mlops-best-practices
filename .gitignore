@@ -14,3 +14,6 @@ mlruns/
 
 ## catboost
 catboost_info/
+
+## artifacts-data
+artifacts/*.csv
