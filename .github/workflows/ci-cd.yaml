@@ -56,7 +56,7 @@ jobs:
 
   deploy:
       needs: build
-      runs-on: ubunut_latest
+      runs-on: ubuntu-latest
 
       steps:
           - name: Checkout Repository
