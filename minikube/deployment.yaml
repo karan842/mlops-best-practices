@@ -14,6 +14,7 @@ spec:
     spec:
       containers:
       - name: churn-prediction-container
-        image: churn-prediction:latest
+        image: karan842/churn-prediction:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
