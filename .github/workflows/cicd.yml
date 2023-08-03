@@ -41,14 +41,18 @@ jobs:
       run: |
         docker build -t churn-prediction:latest .
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v1
+    - name: Log in to Azure Container Registry
+      uses: azure/docker-login@v1
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        login-server: mlchurnprediction.azurecr.io
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
+    
+    - name: Tag the image with ACR URL
+      run: |
+        docker tag churn-prediction:latest mlchurnprediction.azurecr.io/churn-prediction:latest
 
-    - name: Push image to Docker Hub
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/churn-prediction:latest
+    - name: Push image to Azure Container Registry
+      run: |
+        docker push mlchurnprediction.azurecr.io/churn-prediction:latest
+
