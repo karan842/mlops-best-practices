@@ -1,10 +1,11 @@
 <h1 align="center">MLOps🚀 - From developement to deployment🧪💥</h1>
 
+
 ### MLOPS🎢
 > In short for Machine Learning Operations, is a set of practices and methodologies that aim to streamline the deployment, management, and maintenance of machine learning models in production environments. It brings together the principles of DevOps (Development Operations) and applies them specifically to machine learning workflows. The MLOps lifecycle encompasses various stages and processes, ensuring the smooth integration of machine learning models into real-world applications.
 
 <div align="center">
-  <img src="https://github.com/karan842/mlops-best-practices/blob/master/img/mlops-best-practices.png" alt="Infrastructure Tooling" />
+  <img src="https://github.com/karan842/mlops-best-practices/blob/master/img/mlops-best-practices.png" alt="Banner"/>
 </div>
 
 ### NEED FOR MLOPS🔮?
