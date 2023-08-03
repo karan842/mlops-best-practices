@@ -46,7 +46,7 @@ jobs:
       with:
         login-server: mlchurnprediction.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
-        password: ${{ secrets.ACR_PASSWORD }}
+        password: ${{ secrets.ACR_PASSWORD1 }}
     
     - name: Tag the image with ACR URL
       run: |
