@@ -1,9 +1,7 @@
-name: MLOps best practices
+name: MLOps best practices (Continuos Integration)
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
     branches: [ "master" ]
 
 permissions:
@@ -56,3 +54,33 @@ jobs:
       run: |
         docker push mlchurnprediction.azurecr.io/churn-prediction:latest
 
+  deploy:
+      needs: build
+      runs-on: ubunut_latest
+
+      steps:
+          - name: Checkout Repository
+            uses: actions/checkout@v2
+          
+          - name: Set up Azure CLI
+            uses: azure/login@v1
+            with:
+              creds: ${{ secrets.AZURE_CREDINTALS }}
+
+          - name: Configure kubectl
+            run: |
+              echo ${{ secrets.AZURE_KUBECONFIG }} > kubeconfig.yaml
+              export KUBECONFIG=./kubeconfig.yaml
+
+          - name: Install kubectl
+            run: |
+              sudo apt-get update && sudo apt-get install -y kubectl
+
+          - name: Deploy to AKS
+            run: |
+              kubectl apply -f k8s/
+          
+          - name: Wait for Deployment rollout
+            run: |
+              kubectl rollout status deployment/churn-prediction --timeout=5m
+                  

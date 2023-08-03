@@ -1,0 +1,12 @@
+apiVersion: v1 
+kind: Service
+metadata:
+  name: churn-prediction-service
+spec:
+  selector:
+    app: churn-prediction
+  ports:
+  - protocol: TCP
+    ports: 80
+    targetPort: 80
+  type: LoadBalancer
