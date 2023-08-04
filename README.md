@@ -1,8 +1,6 @@
 <h1 align="center">MLOps🚀 - From developement to deployment🧪💥</h1>
 
-
-### MLOPS🎢
-> In short for Machine Learning Operations, is a set of practices and methodologies that aim to streamline the deployment, management, and maintenance of machine learning models in production environments. It brings together the principles of DevOps (Development Operations) and applies them specifically to machine learning workflows. The MLOps lifecycle encompasses various stages and processes, ensuring the smooth integration of machine learning models into real-world applications.
+> ***In short for Machine Learning Operations, is a set of practices and methodologies that aim to streamline the deployment, management, and maintenance of machine learning models in production environments. It brings together the principles of DevOps (Development Operations) and applies them specifically to machine learning workflows. The MLOps lifecycle encompasses various stages and processes, ensuring the smooth integration of machine learning models into real-world applications.***
 
 <div align="center">
   <img src="https://github.com/karan842/mlops-best-practices/blob/master/img/mlops-best-practices.png" alt="Banner"/>
@@ -146,9 +144,61 @@ Set up a Continuous Integration and Continuous Deployment pipeline for your appl
 
 </details>
 
+### Run by yourself🏃‍♂️
+1. Clone the repository:
+```bash
+git init
+git clone https://github.com/karan842/mlops-best-practices.git
+```
 
-## BEST MLOPS TOOL
+3. Create a virtual environment
+```bash
+python -m venv env
+```
+
+3. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+4. Run the Flask App
+```bash
+python app.py
+```
+
+6. Run Data and Model pipeline (Enable MLFLOW)
+```bash
+mlflow ui
+dvc init
+dvc repro
+```
+
+7. Test the application
+```bash
+pytest
+```
+
+### Contribute to it🌱
+To make contribution in this project:
+- Clone the repository.
+- Fork the repository.
+- Make changes.
+- Create a Pull request.
+- Also, publish an issue!
+  
+
+### Machine Learning Tool Stack📚
 <div align="center">
   <img src="https://fullstackdeeplearning.com/spring2021/lecture-6-notes-media/Infra-Tooling3.png" alt="Infrastructure Tooling" />
 </div>
+
+### Acknowledgement📃:
+1. Machine Learning in Production (DeepLearning.AI) - Coursera
+2. MLOps communities from Discord, Twitter, and LinkedIn
+3. Kubernetes, MLFlow, Pytest official documents
+4. Microsoft Learning
+5. ChatGPT and Bard
+
+### Connect Me🤝:
+[Gmail](karanshingde@gmail.com) | [LinkedLin](https://www.linkedin.com/in/karanshingde) | [Twitter](https://www.twitter.com/kuchbhikaran)
 
