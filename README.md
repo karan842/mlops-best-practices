@@ -1,5 +1,7 @@
 <h1 align="center">MLOps🚀 - From developement to deployment🧪💥</h1>
 
+#### This repository has been featured in DVC Aug'23 newletter🎉🎉. [Click here](https://www.linkedin.com/pulse/dvc-august-23-community-updates-iterative-ai)
+
 > ***In short for Machine Learning Operations, is a set of practices and methodologies that aim to streamline the deployment, management, and maintenance of machine learning models in production environments. It brings together the principles of DevOps (Development Operations) and applies them specifically to machine learning workflows. The MLOps lifecycle encompasses various stages and processes, ensuring the smooth integration of machine learning models into real-world applications.***
 
 <div align="center">
